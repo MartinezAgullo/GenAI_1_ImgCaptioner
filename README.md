@@ -95,3 +95,9 @@ Open the  `Dockerfile`  in  `/myapp`  and paste the following commands into the 
     
     CMD ["python", "demo.py"]
 
+
+
+
+### Credits
+
+This repository contains solutions and work done for the first module of the course[Building Generative AI-Powered Applications with Python](https://www.coursera.org/learn/building-gen-ai-powered-applications). All rights and credits go to the course creators and instructors. This work is shared for personal use and academic purposes only.
