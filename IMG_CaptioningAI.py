@@ -13,19 +13,25 @@ from transformers import AutoProcessor, BlipForConditionalGeneration
 processor = AutoProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
 model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
 
-# Load 
-img_path = "test_data/lion.jpg"
 img_path = "test_data/img3.jpg"
-image = Image.open(img_path).convert('RGB') # convert it into an RGB format 
+input_image = Image.open(img_path)
+
+def caption_image(input_image: np.ndarray): 
+    raw_image = Image.fromarray(input_image).convert('RGB')
+    text = "the image of"
+    inputs = processor(images=image, text=text, return_tensors="pt")
+    outputs = model.generate(**inputs, max_length=50)
+    caption = processor.decode(outputs[0], skip_special_tokens=True)
+
+    return caption
 
 
-text = "the image of"
-inputs = processor(images=image, text=text, return_tensors="pt")
+iface = gr.Interface(
+    fn=caption_image, 
+    inputs=gr.Image(), 
+    outputs="text",
+    title="Image Captioning",
+    description="This is a simple web app for generating captions for images using a trained model."
+)
 
-# Generate a caption for the image
-outputs = model.generate(**inputs, max_length=50)
-
-# Decode the generated tokens to text
-caption = processor.decode(outputs[0], skip_special_tokens=True)
-# Print the caption
-print(caption)
+iface.launch()
